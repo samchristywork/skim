@@ -8,6 +8,10 @@
     </style>
   </head>
   <body>
+    <div class="content">
+      <button id="playPauseButton">Pause</button>
+      <div class="time"><span id="time"></span></div>
+    </div>
   </body>
   <script>
     let elementIndex = 0;
@@ -54,6 +58,21 @@
       const s = Math.ceil(ms / 1000);
       const t = s > 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`;
       timeElement.textContent = t;
+    }
+
+    function scrollToHighlightedCharacter(child) {
+      const highlightedSpan = child.querySelector('.highlight');
+      if (highlightedSpan) {
+        const elementTop = highlightedSpan.offsetTop;
+        const elementHeight = highlightedSpan.offsetHeight;
+        const screenHeight = window.innerHeight;
+        const scrollTo = elementTop - (screenHeight / 3) + (elementHeight / 2);
+
+        window.scrollTo({
+          top: scrollTo,
+          behavior: 'smooth'
+        });
+      }
     }
   </script>
 </html>
