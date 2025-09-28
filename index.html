@@ -10,5 +10,42 @@
   <body>
   </body>
   <script>
+    let elementIndex = 0;
+    let charIndex = 0;
+
+    async function fetchAndProcessContent() {
+      try {
+        const response = await fetch("content");
+        const text = await response.text();
+        return processTextToElements(text);
+      } catch (error) {
+        console.error("Error fetching content:", error);
+        return [];
+      }
+    }
+
+    function processTextToElements(text) {
+      let elements = [];
+      let totalChars = 0;
+      let content = document.querySelector(".content");
+
+      text.split("\n").forEach((line) => {
+        line = line.trim();
+        if (line === "") return;
+        let p = document.createElement("p");
+        p.textContent = line;
+        elements.push(p);
+        content.appendChild(p);
+        totalChars += line.length;
+
+        p.addEventListener('click', () => {
+          charIndex = 0;
+          elementIndex = elements.indexOf(p);
+          isPaused = false;
+        });
+      });
+
+      return { elements, totalChars };
+    }
   </script>
 </html>
