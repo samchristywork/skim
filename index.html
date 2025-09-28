@@ -47,5 +47,13 @@
 
       return { elements, totalChars };
     }
+
+    function setTotalTime(totalChars, timePerChar) {
+      let timeElement = document.getElementById('time');
+      const ms = totalChars * timePerChar;
+      const s = Math.ceil(ms / 1000);
+      const t = s > 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`;
+      timeElement.textContent = t;
+    }
   </script>
 </html>
