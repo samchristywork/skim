@@ -14,8 +14,15 @@
     </div>
   </body>
   <script>
+    let isPaused = false;
+    let currentTimeout;
+
     let elementIndex = 0;
     let charIndex = 0;
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
 
     async function fetchAndProcessContent() {
       try {
@@ -58,6 +65,22 @@
       const s = Math.ceil(ms / 1000);
       const t = s > 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`;
       timeElement.textContent = t;
+    }
+
+    async function highlightCharacter(child, textContent, i, timePerChar) {
+      if (isPaused) {
+        await waitForResume();
+      }
+
+      let before = textContent.slice(0, i);
+      let char = textContent[i];
+      let after = textContent.slice(i + 1);
+      let highlightedHTML = `${before}<span class="highlight">${char}</span>${after}`;
+      child.innerHTML = highlightedHTML;
+
+      scrollToHighlightedCharacter(child);
+
+      await sleep(timePerChar);
     }
 
     function scrollToHighlightedCharacter(child) {
