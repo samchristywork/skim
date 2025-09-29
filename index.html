@@ -97,5 +97,25 @@
         });
       }
     }
+
+    async function waitForResume() {
+      return new Promise(resolve => {
+        const checkPause = () => {
+          if (!isPaused) {
+            resolve();
+          } else {
+            currentTimeout = setTimeout(checkPause, 100);
+          }
+        };
+        checkPause();
+      });
+    }
+
+    const playPauseButton = document.getElementById('playPauseButton');
+
+    playPauseButton.addEventListener('click', () => {
+      isPaused = !isPaused;
+      playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
+    });
   </script>
 </html>
