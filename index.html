@@ -143,6 +143,14 @@
       playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
     });
 
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'Space') {
+        event.preventDefault();
+        isPaused = !isPaused;
+        playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
+      }
+    });
+
     highlightText();
   </script>
 </html>
