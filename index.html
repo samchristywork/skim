@@ -111,11 +111,38 @@
       });
     }
 
+    async function highlightText() {
+      const timePerChar = 20;
+
+      try {
+        const { elements, totalChars } = await fetchAndProcessContent();
+        setTotalTime(totalChars, timePerChar);
+
+        while (elementIndex < elements.length) {
+          const child = elements[elementIndex];
+          const textContent = child.textContent;
+
+          await highlightCharacter(child, textContent, charIndex, timePerChar);
+          charIndex++;
+
+          if (charIndex >= textContent.length) {
+            child.innerHTML = textContent;
+            elementIndex++;
+            charIndex = 0;
+          }
+        }
+      } catch (error) {
+        console.error("Error processing content:", error);
+      }
+    }
+
     const playPauseButton = document.getElementById('playPauseButton');
 
     playPauseButton.addEventListener('click', () => {
       isPaused = !isPaused;
       playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
     });
+
+    highlightText();
   </script>
 </html>
