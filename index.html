@@ -113,6 +113,7 @@ p {
         totalChars += line.length;
 
         p.addEventListener('click', () => {
+          elements.forEach(el => el.innerHTML = el.textContent);
           charIndex = 0;
           elementIndex = elements.indexOf(p);
           isPaused = false;
