@@ -54,10 +54,28 @@ p {
   border: none;
   cursor: pointer;
 }
+
+#textInput {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+#loadButton {
+  background-color: #008CBA;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
     </style>
   </head>
   <body>
     <div class="content">
+      <textarea id="textInput" placeholder="Enter your text here..."></textarea>
+      <button id="loadButton">Load Text</button>
       <button id="playPauseButton">Play</button>
       <div class="time"><span id="time"></span></div>
     </div>
@@ -69,25 +87,21 @@ p {
     let elementIndex = 0;
     let charIndex = 0;
 
+    let elements = [];
+    let totalChars = 0;
+
     function sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    async function fetchAndProcessContent() {
-      try {
-        const response = await fetch("content");
-        const text = await response.text();
-        return processTextToElements(text);
-      } catch (error) {
-        console.error("Error fetching content:", error);
-        return [];
+    async function processTextToElements(text) {
+      const contentDiv = document.querySelector(".content");
+      while (contentDiv.firstChild && contentDiv.firstChild.id !== 'playPauseButton' && contentDiv.firstChild.id !== 'time') {
+        contentDiv.removeChild(contentDiv.firstChild);
       }
-    }
 
-    function processTextToElements(text) {
-      let elements = [];
-      let totalChars = 0;
-      let content = document.querySelector(".content");
+      elements = [];
+      totalChars = 0;
 
       text.split("\n").forEach((line) => {
         line = line.trim();
@@ -95,7 +109,7 @@ p {
         let p = document.createElement("p");
         p.textContent = line;
         elements.push(p);
-        content.appendChild(p);
+        contentDiv.appendChild(p);
         totalChars += line.length;
 
         p.addEventListener('click', () => {
@@ -164,7 +178,6 @@ p {
       const timePerChar = 20;
 
       try {
-        const { elements, totalChars } = await fetchAndProcessContent();
         setTotalTime(totalChars, timePerChar);
 
         while (elementIndex < elements.length) {
@@ -186,6 +199,8 @@ p {
     }
 
     const playPauseButton = document.getElementById('playPauseButton');
+    const loadButton = document.getElementById('loadButton');
+    const textInput = document.getElementById('textInput');
 
     playPauseButton.addEventListener('click', () => {
       isPaused = !isPaused;
@@ -200,6 +215,14 @@ p {
       }
     });
 
-    highlightText();
+    loadButton.addEventListener('click', async () => {
+      const text = textInput.value;
+      const result = await processTextToElements(text);
+      elements = result.elements;
+      totalChars = result.totalChars;
+      elementIndex = 0;
+      charIndex = 0;
+      highlightText();
+    });
   </script>
 </html>
