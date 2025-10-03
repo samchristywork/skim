@@ -215,6 +215,22 @@ p {
         event.preventDefault();
         isPaused = !isPaused;
         playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
+      } else if (event.code === 'ArrowRight') {
+        if (elementIndex < elements.length - 1) {
+          elements[elementIndex].innerHTML = elements[elementIndex].textContent;
+          elementIndex++;
+          charIndex = 0;
+          isPaused = false;
+          playPauseButton.textContent = 'Pause';
+        }
+      } else if (event.code === 'ArrowLeft') {
+        if (elementIndex > 0) {
+          elements[elementIndex].innerHTML = elements[elementIndex].textContent;
+          elementIndex--;
+          charIndex = 0;
+          isPaused = false;
+          playPauseButton.textContent = 'Pause';
+        }
       }
     });
 
