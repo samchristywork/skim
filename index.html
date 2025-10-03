@@ -215,7 +215,7 @@ p {
         event.preventDefault();
         isPaused = !isPaused;
         playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
-      } else if (event.code === 'ArrowRight') {
+      } else if (event.code === 'ArrowRight' || event.code === 'KeyN') {
         if (elementIndex < elements.length - 1) {
           elements[elementIndex].innerHTML = elements[elementIndex].textContent;
           elementIndex++;
@@ -223,7 +223,7 @@ p {
           isPaused = false;
           playPauseButton.textContent = 'Pause';
         }
-      } else if (event.code === 'ArrowLeft') {
+      } else if (event.code === 'ArrowLeft' || event.code === 'KeyP') {
         if (elementIndex > 0) {
           elements[elementIndex].innerHTML = elements[elementIndex].textContent;
           elementIndex--;
