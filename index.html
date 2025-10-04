@@ -247,6 +247,14 @@ p {
           isPaused = false;
           playPauseButton.textContent = 'Pause';
         }
+      } else if (event.code === 'ArrowUp') {
+        speed = Math.max(1, speed - 1);
+        speedInput.value = speed;
+        setTotalTime(totalChars, speed);
+      } else if (event.code === 'ArrowDown') {
+        speed = Math.min(100, speed + 1);
+        speedInput.value = speed;
+        setTotalTime(totalChars, speed);
       } else if (event.code === 'KeyR') {
         elements.forEach(el => el.innerHTML = el.textContent);
         elementIndex = 0;
