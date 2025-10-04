@@ -72,6 +72,17 @@ p {
   border: none;
   cursor: pointer;
 }
+
+#speedControl {
+  position: absolute;
+  top: 10px;
+  left: 100px;
+}
+
+#speedLabel {
+  margin-right: 5px;
+  color: #555;
+}
     </style>
   </head>
   <body>
@@ -79,6 +90,10 @@ p {
       <textarea id="textInput" placeholder="Enter your text here..."></textarea>
       <button id="loadButton">Load Text</button>
       <button id="playPauseButton">Play</button>
+      <div id="speedControl">
+        <label id="speedLabel" for="speed">Speed:</label>
+        <input type="number" id="speed" value="20" min="1" max="100" step="1">
+      </div>
       <div class="time"><span id="time"></span></div>
     </div>
   </body>
@@ -92,13 +107,15 @@ p {
     let elements = [];
     let totalChars = 0;
 
+    let speed = 20;
+
     function sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     async function processTextToElements(text) {
       const contentDiv = document.querySelector(".content");
-      while (contentDiv.firstChild && contentDiv.firstChild.id !== 'playPauseButton' && contentDiv.firstChild.id !== 'time') {
+      while (contentDiv.firstChild && contentDiv.firstChild.id !== 'playPauseButton' && contentDiv.firstChild.id !== 'time' && contentDiv.firstChild.id !== 'speedControl') {
         contentDiv.removeChild(contentDiv.firstChild);
       }
 
@@ -178,16 +195,14 @@ p {
     }
 
     async function highlightText() {
-      const timePerChar = 20;
+      setTotalTime(totalChars, speed);
 
       try {
-        setTotalTime(totalChars, timePerChar);
-
         while (elementIndex < elements.length) {
           const child = elements[elementIndex];
           const textContent = child.textContent;
 
-          await highlightCharacter(child, textContent, charIndex, timePerChar);
+          await highlightCharacter(child, textContent, charIndex, speed);
           charIndex++;
 
           if (charIndex >= textContent.length) {
@@ -204,6 +219,7 @@ p {
     const playPauseButton = document.getElementById('playPauseButton');
     const loadButton = document.getElementById('loadButton');
     const textInput = document.getElementById('textInput');
+    const speedInput = document.getElementById('speed');
 
     playPauseButton.addEventListener('click', () => {
       isPaused = !isPaused;
@@ -250,6 +266,15 @@ p {
       elementIndex = 0;
       charIndex = 0;
       highlightText();
+    });
+
+    speedInput.addEventListener('change', () => {
+      speed = parseInt(speedInput.value, 10);
+      if (isNaN(speed) || speed < 1) {
+        speed = 1;
+        speedInput.value = 1;
+      }
+      setTotalTime(totalChars, speed);
     });
   </script>
 </html>
