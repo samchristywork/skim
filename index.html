@@ -115,7 +115,7 @@ p {
 
     async function processTextToElements(text) {
       const contentDiv = document.querySelector(".content");
-      while (contentDiv.firstChild && contentDiv.firstChild.id !== 'playPauseButton' && contentDiv.firstChild.id !== 'time' && contentDiv.firstChild.id !== 'speedControl') {
+      while (contentDiv.firstChild && contentDiv.firstChild.id !== 'playPauseButton' && contentDiv.firstChild.id !== 'time' && contentDiv.firstChild.id !== 'speedControl' && contentDiv.firstChild.id !== 'textInput' && contentDiv.firstChild.id !== 'loadButton') {
         contentDiv.removeChild(contentDiv.firstChild);
       }
 
@@ -132,10 +132,11 @@ p {
         totalChars += line.length;
 
         p.addEventListener('click', () => {
-          elements.forEach(el => el.innerHTML = el.textContent);
+          resetHighlighting();
           charIndex = 0;
           elementIndex = elements.indexOf(p);
           isPaused = false;
+          highlightText();
         });
       });
 
@@ -209,11 +210,23 @@ p {
             child.innerHTML = textContent;
             elementIndex++;
             charIndex = 0;
+
+            if (elementIndex >= elements.length) {
+              break;
+            }
           }
         }
       } catch (error) {
         console.error("Error processing content:", error);
       }
+    }
+
+    function resetHighlighting() {
+      elements.forEach(el => el.innerHTML = el.textContent);
+      elementIndex = 0;
+      charIndex = 0;
+      isPaused = false;
+      playPauseButton.textContent = 'Pause';
     }
 
     const playPauseButton = document.getElementById('playPauseButton');
@@ -224,6 +237,9 @@ p {
     playPauseButton.addEventListener('click', () => {
       isPaused = !isPaused;
       playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
+      if(!isPaused) {
+        highlightText();
+      }
     });
 
     document.addEventListener('keydown', (event) => {
@@ -231,6 +247,9 @@ p {
         event.preventDefault();
         isPaused = !isPaused;
         playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
+        if(!isPaused) {
+          highlightText();
+        }
       } else if (event.code === 'ArrowRight' || event.code === 'KeyN') {
         if (elementIndex < elements.length - 1) {
           elements[elementIndex].innerHTML = elements[elementIndex].textContent;
@@ -238,6 +257,7 @@ p {
           charIndex = 0;
           isPaused = false;
           playPauseButton.textContent = 'Pause';
+          highlightText();
         }
       } else if (event.code === 'ArrowLeft' || event.code === 'KeyP') {
         if (elementIndex > 0) {
@@ -246,6 +266,7 @@ p {
           charIndex = 0;
           isPaused = false;
           playPauseButton.textContent = 'Pause';
+          highlightText();
         }
       } else if (event.code === 'ArrowUp') {
         event.preventDefault();
@@ -258,11 +279,8 @@ p {
         speedInput.value = speed;
         setTotalTime(totalChars, speed);
       } else if (event.code === 'KeyR') {
-        elements.forEach(el => el.innerHTML = el.textContent);
-        elementIndex = 0;
-        charIndex = 0;
-        isPaused = false;
-        playPauseButton.textContent = 'Pause';
+        resetHighlighting();
+        highlightText();
       } else {
         console.log('Other key pressed:', event.code);
       }
@@ -273,8 +291,7 @@ p {
       const result = await processTextToElements(text);
       elements = result.elements;
       totalChars = result.totalChars;
-      elementIndex = 0;
-      charIndex = 0;
+      resetHighlighting();
       highlightText();
     });
 
