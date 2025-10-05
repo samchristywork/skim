@@ -126,6 +126,7 @@ p {
   <script>
     let isPaused = true;
     let currentTimeout;
+    let isHighlighting = false;
 
     let elementIndex = 0;
     let charIndex = 0;
@@ -157,6 +158,7 @@ p {
         totalChars += line.length;
 
         p.addEventListener('click', () => {
+          stopHighlighting();
           resetHighlighting();
           charIndex = 0;
           elementIndex = elements.indexOf(p);
@@ -224,6 +226,11 @@ p {
     }
 
     async function highlightText() {
+      if (isHighlighting) {
+        return;
+      }
+      isHighlighting = true;
+
       setTotalTime(totalChars, speed);
 
       try {
@@ -246,7 +253,14 @@ p {
         }
       } catch (error) {
         console.error("Error processing content:", error);
+      } finally {
+        isHighlighting = false;
       }
+    }
+
+    function stopHighlighting() {
+      isPaused = true;
+      clearTimeout(currentTimeout);
     }
 
     function resetHighlighting() {
