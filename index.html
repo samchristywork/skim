@@ -285,6 +285,10 @@ p {
     });
 
     document.addEventListener('keydown', (event) => {
+      if (document.activeElement === textInput) {
+        return;
+      }
+
       if (event.code === 'Space') {
         event.preventDefault();
         isPaused = !isPaused;
