@@ -248,10 +248,12 @@ p {
           playPauseButton.textContent = 'Pause';
         }
       } else if (event.code === 'ArrowUp') {
+        event.preventDefault();
         speed = Math.max(1, speed - 1);
         speedInput.value = speed;
         setTotalTime(totalChars, speed);
       } else if (event.code === 'ArrowDown') {
+        event.preventDefault();
         speed = Math.min(100, speed + 1);
         speedInput.value = speed;
         setTotalTime(totalChars, speed);
