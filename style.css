@@ -15,10 +15,20 @@ body {
   position: relative;
 }
 
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
 .input-controls {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 #textInput {
