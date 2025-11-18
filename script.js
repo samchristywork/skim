@@ -1,4 +1,5 @@
 let isPaused = true;
+let loadedText = '';
 let currentTimeout;
 let isHighlighting = false;
 
@@ -146,15 +147,23 @@ function resetHighlighting() {
 }
 
 const playPauseButton = document.getElementById('playPauseButton');
-const loadButton = document.getElementById('loadButton');
 const textInput = document.getElementById('textInput');
 const speedInput = document.getElementById('speed');
 
-playPauseButton.addEventListener('click', () => {
-  isPaused = !isPaused;
-  playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
-  if (!isPaused) {
+playPauseButton.addEventListener('click', async () => {
+  if (textInput.value !== loadedText) {
+    loadedText = textInput.value;
+    const result = await processTextToElements(loadedText);
+    elements = result.elements;
+    totalChars = result.totalChars;
+    resetHighlighting();
     highlightText();
+  } else {
+    isPaused = !isPaused;
+    playPauseButton.textContent = isPaused ? 'Play' : 'Pause';
+    if (!isPaused) {
+      highlightText();
+    }
   }
 });
 
@@ -204,15 +213,6 @@ document.addEventListener('keydown', (event) => {
   } else {
     console.log('Other key pressed:', event.code);
   }
-});
-
-loadButton.addEventListener('click', async () => {
-  const text = textInput.value;
-  const result = await processTextToElements(text);
-  elements = result.elements;
-  totalChars = result.totalChars;
-  resetHighlighting();
-  highlightText();
 });
 
 speedInput.addEventListener('change', () => {
