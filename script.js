@@ -16,7 +16,7 @@ function sleep(ms) {
 }
 
 async function processTextToElements(text) {
-  const contentDiv = document.querySelector(".content");
+  const contentDiv = document.querySelector(".reading-content");
   const paragraphs = contentDiv.querySelectorAll('p');
   paragraphs.forEach(p => p.remove());
 

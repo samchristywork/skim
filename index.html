@@ -9,28 +9,32 @@
   </head>
   <body>
     <div class="content">
-      <div class="help">
-        <p>Paste text above and click <strong>Play</strong> to begin. Click any paragraph to jump to it.</p>
-        <ul>
-          <li><kbd>Space</kbd> — play / pause</li>
-          <li><kbd>←</kbd> <kbd>→</kbd> or <kbd>P</kbd> <kbd>N</kbd> — previous / next paragraph</li>
-          <li><kbd>↑</kbd> <kbd>↓</kbd> — adjust speed</li>
-          <li><kbd>R</kbd> — restart</li>
-        </ul>
-      </div>
       <div class="sticky-header">
-        <div class="input-controls">
-          <textarea id="textInput" placeholder="Enter your text here..."></textarea>
-          <div class="controls-row">
+        <div class="title-bar">
+          <h1>Skim</h1>
+          <div class="controls">
             <button id="playPauseButton">Play</button>
             <div id="speedControl">
               <label id="speedLabel" for="speed">Speed:</label>
               <input type="number" id="speed" value="20" min="1" max="100" step="1">
             </div>
+            <span class="time"><span id="time"></span></span>
           </div>
         </div>
-        <div class="time"><span id="time"></span></div>
       </div>
+      <div class="setup">
+        <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+        <div class="help">
+          <p>Paste your text above and click <strong>Play</strong> to begin. Click any paragraph to jump to it.</p>
+          <ul>
+            <li><kbd>Space</kbd> — play / pause</li>
+            <li><kbd>←</kbd> <kbd>→</kbd> or <kbd>P</kbd> <kbd>N</kbd> — previous / next paragraph</li>
+            <li><kbd>↑</kbd> <kbd>↓</kbd> — adjust speed</li>
+            <li><kbd>R</kbd> — restart</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reading-content"></div>
     </div>
   </body>
 </html>
