@@ -215,6 +215,19 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+const darkModeToggle = document.getElementById('darkModeToggle');
+
+if (localStorage.getItem('darkMode') === 'true') {
+  document.documentElement.classList.add('dark');
+  darkModeToggle.textContent = 'Light';
+}
+
+darkModeToggle.addEventListener('click', () => {
+  const isDark = document.documentElement.classList.toggle('dark');
+  darkModeToggle.textContent = isDark ? 'Light' : 'Dark';
+  localStorage.setItem('darkMode', isDark);
+});
+
 speedInput.addEventListener('change', () => {
   speed = parseInt(speedInput.value, 10);
   if (isNaN(speed) || speed < 1) {
