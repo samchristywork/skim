@@ -37,6 +37,7 @@ async function processTextToElements(text) {
       resetHighlighting();
       charIndex = 0;
       elementIndex = elements.indexOf(p);
+      updateProgress();
       isPaused = false;
       highlightText();
     });
@@ -46,6 +47,11 @@ async function processTextToElements(text) {
     elements,
     totalChars
   };
+}
+
+function updateProgress() {
+  const pct = elements.length === 0 ? 0 : (elementIndex / elements.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
 }
 
 function setTotalTime(totalChars, timePerChar) {
@@ -120,6 +126,7 @@ async function highlightText() {
         child.innerHTML = textContent;
         elementIndex++;
         charIndex = 0;
+        updateProgress();
 
         if (elementIndex >= elements.length) {
           break;
@@ -144,6 +151,7 @@ function resetHighlighting() {
   charIndex = 0;
   isPaused = false;
   playPauseButton.textContent = 'Pause';
+  updateProgress();
 }
 
 const playPauseButton = document.getElementById('playPauseButton');
@@ -203,6 +211,7 @@ document.addEventListener('keydown', (event) => {
       elements[elementIndex].innerHTML = elements[elementIndex].textContent;
       elementIndex++;
       charIndex = 0;
+      updateProgress();
       isPaused = false;
       playPauseButton.textContent = 'Pause';
       highlightText();
@@ -212,6 +221,7 @@ document.addEventListener('keydown', (event) => {
       elements[elementIndex].innerHTML = elements[elementIndex].textContent;
       elementIndex--;
       charIndex = 0;
+      updateProgress();
       isPaused = false;
       playPauseButton.textContent = 'Pause';
       highlightText();

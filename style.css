@@ -51,9 +51,21 @@ body {
   top: 0;
   background: var(--surface);
   z-index: 1;
-  border-bottom: 1px solid var(--border);
   margin: 0 -24px 24px;
-  padding: 14px 24px;
+  padding: 14px 24px 0;
+}
+
+.progress-bar {
+  height: 3px;
+  background: var(--border);
+  margin: 14px -24px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #008CBA;
+  transition: width 0.3s ease;
 }
 
 .title-bar {
