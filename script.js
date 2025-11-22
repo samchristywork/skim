@@ -149,6 +149,24 @@ function resetHighlighting() {
 const playPauseButton = document.getElementById('playPauseButton');
 const textInput = document.getElementById('textInput');
 const speedInput = document.getElementById('speed');
+const setup = document.querySelector('.setup');
+const editTextButton = document.getElementById('editTextButton');
+
+function collapseSetup() {
+  setup.classList.add('collapsed');
+  editTextButton.hidden = false;
+}
+
+function expandSetup() {
+  setup.classList.remove('collapsed');
+  editTextButton.hidden = true;
+}
+
+editTextButton.addEventListener('click', () => {
+  expandSetup();
+  isPaused = true;
+  playPauseButton.textContent = 'Play';
+});
 
 playPauseButton.addEventListener('click', async () => {
   if (textInput.value !== loadedText) {
@@ -156,6 +174,7 @@ playPauseButton.addEventListener('click', async () => {
     const result = await processTextToElements(loadedText);
     elements = result.elements;
     totalChars = result.totalChars;
+    collapseSetup();
     resetHighlighting();
     highlightText();
   } else {

@@ -63,11 +63,32 @@ body {
   gap: 16px;
 }
 
+.title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
 .title-bar h1 {
   margin: 0;
   font-size: 1.3em;
   color: var(--text);
   letter-spacing: -0.02em;
+}
+
+.edit-text-btn {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.edit-text-btn:hover {
+  color: var(--text-muted);
 }
 
 .controls {
@@ -77,7 +98,21 @@ body {
 }
 
 .setup {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
   margin-bottom: 24px;
+  transition: grid-template-rows 0.3s ease, opacity 0.3s ease, margin-bottom 0.3s ease;
+}
+
+.setup.collapsed {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  margin-bottom: 0;
+}
+
+.setup > * {
+  overflow: hidden;
 }
 
 #textInput {
