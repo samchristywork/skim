@@ -38,6 +38,7 @@ async function processTextToElements(text) {
       charIndex = 0;
       elementIndex = elements.indexOf(p);
       updateProgress();
+      updateTime();
       isPaused = false;
       highlightText();
     });
@@ -54,12 +55,23 @@ function updateProgress() {
   document.getElementById('progressFill').style.width = pct + '%';
 }
 
-function setTotalTime(totalChars, timePerChar) {
-  let timeElement = document.getElementById('time');
-  const ms = totalChars * timePerChar;
+function updateTime() {
+  const timeElement = document.getElementById('time');
+  if (elements.length === 0) {
+    timeElement.textContent = '';
+    return;
+  }
+  let remaining = -charIndex;
+  for (let i = elementIndex; i < elements.length; i++) {
+    remaining += elements[i].textContent.length;
+  }
+  const ms = remaining * speed;
   const s = Math.ceil(ms / 1000);
-  const t = s > 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`;
-  timeElement.textContent = t;
+  if (s <= 0) {
+    timeElement.textContent = 'Done';
+  } else {
+    timeElement.textContent = s > 60 ? `${Math.floor(s / 60)}m ${s % 60}s left` : `${s}s left`;
+  }
 }
 
 async function highlightCharacter(child, textContent, i, timePerChar) {
@@ -112,8 +124,6 @@ async function highlightText() {
   }
   isHighlighting = true;
 
-  setTotalTime(totalChars, speed);
-
   try {
     while (elementIndex < elements.length) {
       const child = elements[elementIndex];
@@ -121,6 +131,7 @@ async function highlightText() {
 
       await highlightCharacter(child, textContent, charIndex, speed);
       charIndex++;
+      updateTime();
 
       if (charIndex >= textContent.length) {
         child.innerHTML = textContent;
@@ -152,6 +163,7 @@ function resetHighlighting() {
   isPaused = false;
   playPauseButton.textContent = 'Pause';
   updateProgress();
+  updateTime();
 }
 
 const playPauseButton = document.getElementById('playPauseButton');
@@ -230,12 +242,12 @@ document.addEventListener('keydown', (event) => {
     event.preventDefault();
     speed = Math.max(1, speed - 1);
     speedInput.value = speed;
-    setTotalTime(totalChars, speed);
+    updateTime();
   } else if (event.code === 'ArrowDown') {
     event.preventDefault();
     speed = Math.min(100, speed + 1);
     speedInput.value = speed;
-    setTotalTime(totalChars, speed);
+    updateTime();
   } else if (event.code === 'KeyR') {
     resetHighlighting();
     highlightText();
@@ -263,5 +275,5 @@ speedInput.addEventListener('change', () => {
     speed = 1;
     speedInput.value = 1;
   }
-  setTotalTime(totalChars, speed);
+  updateTime();
 });
