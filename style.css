@@ -156,6 +156,7 @@ body {
   background-color: #007aa6;
 }
 
+#modeToggle,
 #darkModeToggle {
   background: none;
   color: var(--text-muted);
@@ -167,6 +168,7 @@ body {
   white-space: nowrap;
 }
 
+#modeToggle:hover,
 #darkModeToggle:hover {
   color: var(--text);
   border-color: var(--text-muted);
