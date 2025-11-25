@@ -13,7 +13,7 @@ let elements = [];
 let totalChars = 0;
 let wordCounts = [];
 
-let speed = 300;
+let speed = 200;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -49,13 +49,16 @@ async function processTextToElements(text) {
     wordCounts.push(splitIntoWords(line).length);
 
     p.addEventListener('click', () => {
-      stopHighlighting();
-      resetHighlighting();
-      charIndex = 0;
+      if (isHighlighting) restartParagraph = true;
+      clearTimeout(currentTimeout);
+      elements.forEach(el => el.innerHTML = el.textContent);
       elementIndex = elements.indexOf(p);
+      charIndex = 0;
+      isDone = false;
+      isPaused = false;
+      playPauseButton.textContent = 'Pause';
       updateProgress();
       updateTime();
-      isPaused = false;
       highlightText();
     });
   });
@@ -252,6 +255,7 @@ document.addEventListener('keydown', (event) => {
     if (!isPaused) highlightText();
   } else if (event.code === 'ArrowRight' || event.code === 'KeyN') {
     if (elementIndex < elements.length - 1) {
+      if (isHighlighting) restartParagraph = true;
       elements[elementIndex].innerHTML = elements[elementIndex].textContent;
       elementIndex++;
       charIndex = 0;
@@ -264,6 +268,7 @@ document.addEventListener('keydown', (event) => {
     }
   } else if (event.code === 'ArrowLeft' || event.code === 'KeyP') {
     if (elementIndex > 0) {
+      if (isHighlighting) restartParagraph = true;
       elements[elementIndex].innerHTML = elements[elementIndex].textContent;
       elementIndex--;
       charIndex = 0;
