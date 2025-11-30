@@ -21,7 +21,23 @@ highlighting one word (or character) at a time.
 
 ## Usage
 
+Open `index.html` in any modern browser.
+
+Paste your text into the input area and click **Play**. If
+you change the text, clicking Play again reloads it from
+scratch. If the text is unchanged, Play/Pause toggles
+playback.
+
 ## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Space` | Play / pause |
+| `←` / `P` | Previous paragraph |
+| `→` / `N` | Next paragraph |
+| `↑` | Decrease speed (slower) |
+| `↓` | Increase speed (faster) |
+| `R` | Restart from the beginning |
 
 ## License
 
